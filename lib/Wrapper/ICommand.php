@@ -77,4 +77,9 @@ interface ICommand {
 	 * @return int|null the exit code or null if command was not executed yet
 	 */
 	public function getExitCode();
+
+	/**
+	 * Resets the state of the command object.
+	 */
+	public function reset() : void;
 }

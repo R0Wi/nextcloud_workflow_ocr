@@ -35,6 +35,14 @@ class PdfOcrProcessor implements IOcrProcessor {
 	}
 
 	public function ocrFile(string $fileContent): string {
+		try {
+			return $this->internalOcrFile($fileContent);
+		} finally {
+			$this->command->reset();
+		}
+	}
+
+	private function internalOcrFile(string $fileContent): string {
 		$this->command
 			->setCommand("ocrmypdf --redo-ocr -q - - | cat")
 			->setStdIn($fileContent);

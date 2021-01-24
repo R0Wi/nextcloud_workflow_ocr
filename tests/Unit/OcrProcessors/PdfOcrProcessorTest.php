@@ -96,4 +96,46 @@ class PdfOcrProcessorTest extends TestCase {
 		
 		$this->assertTrue($thrown);
 	}
+
+	public function testResetCommandIsCalled_NoExceptionOccured() {
+		$this->command->expects($this->once())
+			->method('reset');
+
+		$this->command->expects($this->once())
+			->method('setCommand')
+			->willReturn($this->command);
+		$this->command->expects($this->once())
+			->method('setStdIn')
+			->willReturn($this->command);
+		$this->command->expects($this->once())
+			->method('execute')
+			->willReturn(true);
+
+		$processor = new PdfOcrProcessor($this->command);
+		$processor->ocrFile('doesNotMatter');
+	}
+
+	public function testResetCOmmandIsCalled_ExceptionOccured() {
+		$testEx = new \Exception('testEx');
+
+		$this->command->expects($this->once())
+			->method('reset');
+
+		$this->command->expects($this->once())
+			->method('setCommand')
+			->willReturn($this->command);
+		$this->command->expects($this->once())
+			->method('setStdIn')
+			->willReturn($this->command);
+		$this->command->expects($this->once())
+			->method('execute')
+			->willThrowException($testEx);
+		
+		$processor = new PdfOcrProcessor($this->command);
+		try {
+			$processor->ocrFile('doesNotMatter');
+		} catch (\Exception $ex) {
+			$this->assertEquals($testEx, $ex);
+		}
+	}
 }

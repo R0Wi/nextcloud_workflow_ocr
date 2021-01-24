@@ -83,4 +83,22 @@ class CommandWrapper implements ICommand {
 	public function getExitCode() {
 		return $this->command->getExitCode();
 	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function reset() : void {
+		$options = [
+			'_stdIn' => null,
+			'_command' => null,
+			'_args' => [],
+			'_execCommand' => null,
+			'_stdOut' => '',
+			'_stdErr' => '',
+			'_exitCode' => null,
+			'_error' => '',
+			'_executed' => false
+		];
+		$this->command->setOptions($options);
+	}
 }
